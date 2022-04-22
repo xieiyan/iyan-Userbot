@@ -100,6 +100,9 @@ def man_cmd(
     def decorator(func):
         async def wrapper(event):
             chat = event.chat
+            if not event.out:
+                if event.sender_id not in DEVS:
+                    return
             if admins_only:
                 if event.is_private:
                     return await edit_delete(
@@ -292,4 +295,4 @@ def callback(**args):
             tgbot.add_event_handler(func, events.CallbackQuery(**args))
         return func
 
-    return
+    return decorator
